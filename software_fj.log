@@ -1,0 +1,30 @@
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:main) >>> INICIANDO EJECUCIÓN DEL SISTEMA INTEGRAL SOFTWARE FJ (FASE 4 UNAD) <<<
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Instancia de GestorSoftwareFJ inicializada con éxito.
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Servicio agregado al catálogo: Sala [SRV-SALA-01] 'Sala de Innovación y Diseño' | Capacidad: 12 pers | $65,000.00/hr | Con Refrigerio
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Servicio agregado al catálogo: Equipos [SRV-EQP-01] 'Laptops Dell Precision (i7/32GB)' | Stock: 5 uds | $95,000.00/día | Depósito: $300,000.00
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Servicio agregado al catálogo: Asesoría [SRV-ASE-01] 'Arquitectura Cloud en AWS/Azure' | Nivel: MASTER (x2.0) | Tarifa Base: $120,000.00/hr
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Servicio agregado al catálogo: Sala [SRV-SALA-02] 'Auditorio Central' | Capacidad: 50 pers | $150,000.00/hr | Sin Refrigerio
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Iniciando registro de cliente: Documento=1114885230, Nombre='Malkon Alvarez'...
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Cliente registrado exitosamente en memoria: Cliente [CLI-001] CC: 1114885230 - Malkon Alvarez | Contacto: malkon.alvarez@unad.edu.co / Tel: 3154889900
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Iniciando registro de cliente: Documento=901458789, Nombre='Tech Solutions S.A.S'...
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Cliente registrado exitosamente en memoria: Cliente [CLI-002] CC: 901458789 - Tech Solutions S.A.S | Contacto: contacto@techsolutions.com / Tel: 6022889900
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Solicitud de reserva [RES-101]: Cliente=CLI-001, Servicio=SRV-SALA-01, Duración=4.0
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Reserva creada en estado PENDIENTE: Reserva [RES-101] | Estado: PENDIENTE | Cliente: Malkon Alvarez (1114885230) | Servicio: Sala de Innovación y Diseño (x4.0) | Total: $309,400.00
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Reserva [RES-101] CONFIRMADA exitosamente por $278,460.00 COP.
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Solicitud de reserva [RES-102]: Cliente=CLI-002, Servicio=SRV-EQP-01, Duración=5.0
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Reserva creada en estado PENDIENTE: Reserva [RES-102] | Estado: PENDIENTE | Cliente: Tech Solutions S.A.S (901458789) | Servicio: Laptops Dell Precision (i7/32GB) (x5.0) | Total: $922,250.00
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Reserva [RES-102] CONFIRMADA exitosamente por $876,137.50 COP.
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Solicitud de reserva [RES-103]: Cliente=CLI-002, Servicio=SRV-ASE-01, Duración=10.0
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Reserva creada en estado PENDIENTE: Reserva [RES-103] | Estado: PENDIENTE | Cliente: Tech Solutions S.A.S (901458789) | Servicio: Arquitectura Cloud en AWS/Azure (x10.0) | Total: $2,856,000.00
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Reserva [RES-103] CONFIRMADA exitosamente por $2,427,600.00 COP.
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Iniciando registro de cliente: Documento=1005889911, Nombre='Carlos Pérez'...
+2026-11-18 01:39:31 [ERROR] (SoftwareFJ:gestor) Error de dominio al registrar cliente [1005889911]: [ERR_CLIENTE_DATOS_INVALIDOS] Formato de correo electrónico inválido: 'correo_sin_formato_valido'.
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Iniciando registro de cliente: Documento=1114885230, Nombre='Homónimo Intruso'...
+2026-11-18 01:39:31 [ERROR] (SoftwareFJ:gestor) Error de dominio al registrar cliente [1114885230]: [ERR_CLIENTE_DUPLICADO] Ya existe un cliente registrado con el documento '1114885230'.
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Solicitud de reserva [RES-104]: Cliente=CLI-001, Servicio=SRV-SALA-01, Duración=2.0
+2026-11-18 01:39:31 [WARNING] (SoftwareFJ:gestor) Reserva [RES-104] RECHAZADA por regla de negocio: [ERR_CAPACIDAD_EXCEDIDA] Aforo superado: Capacidad máxima=12, solicitados=25.
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Solicitud de reserva [RES-105]: Cliente=CLI-002, Servicio=SRV-EQP-01, Duración=3.0
+2026-11-18 01:39:31 [WARNING] (SoftwareFJ:gestor) Reserva [RES-105] RECHAZADA por regla de negocio: [ERR_STOCK_INSUFICIENTE] Inventario insuficiente: Disponibles=5, solicitados=10.
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:gestor) Solicitud de reserva [RES-106]: Cliente=CLI-001, Servicio=SRV-SALA-02, Duración=4.0
+2026-11-18 01:39:31 [WARNING] (SoftwareFJ:gestor) Reserva [RES-106] RECHAZADA por regla de negocio: [ERR_SERVICIO_NO_DISPONIBLE] El servicio 'SRV-SALA-02' no está disponible: La sala se encuentra actualmente en remodelación o mantenimiento..
+2026-11-18 01:39:31 [INFO] (SoftwareFJ:main) >>> EJECUCIÓN DE SIMULACIONES FINALIZADA CON ÉXITO <<<
