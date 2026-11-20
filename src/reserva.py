@@ -2,7 +2,7 @@
 ========================================================================================
 SISTEMA INTEGRAL SOFTWARE FJ - MÓDULO DE RESERVAS
 Curso: Programación (Código 213023) - UNAD | Fase 4: Prácticas Simuladas
-Rol Asignado (Integrante 4 - Lógica de Negocio y Transacciones): [Nombre Compañero 4 / Malkon Alvarez]
+Rol Asignado (Integrante 4 - Lógica de Negocio y Transacciones): [kevin Andres Vasquez / Malkon Alvarez]
 Rama de Trabajo: feature/business-logic-reservations
 ========================================================================================
 Propósito:
@@ -49,6 +49,7 @@ class Reserva(EntidadBase):
         self.parametros_servicio = parametros_servicio
         self._estado = EstadoReserva.PENDIENTE
         self._costo_total = 0.0
+        self._motivo_cancelacion = None
 
         # Al instanciar, verifica de inmediato la disponibilidad del servicio
         self.servicio.validar_disponibilidad(**self.parametros_servicio)
@@ -63,6 +64,10 @@ class Reserva(EntidadBase):
     @property
     def costo_total(self) -> float:
         return self._costo_total
+
+    @property
+    def motivo_cancelacion(self) -> str | None:
+        return self._motivo_cancelacion
 
     def confirmar(self, descuento_corporativo: float = 0.0) -> float:
         """
@@ -88,6 +93,9 @@ class Reserva(EntidadBase):
         """
         if self._estado in (EstadoReserva.CANCELADA, EstadoReserva.COMPLETADA):
             raise EstadoReservaInvalidoError(self._estado.value, f"Cancelar Reserva ({motivo})")
+        if not isinstance(motivo, str) or not motivo.strip():
+            raise ReservaInvalidaError("El motivo de cancelación no puede estar vacío.")
+        self._motivo_cancelacion = motivo.strip()
         self._estado = EstadoReserva.CANCELADA
 
     def completar(self):
