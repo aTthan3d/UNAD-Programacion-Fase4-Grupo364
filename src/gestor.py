@@ -2,7 +2,7 @@
 ========================================================================================
 SISTEMA INTEGRAL SOFTWARE FJ - MÓDULO GESTOR Y CONTROLADOR DE NEGOCIO
 Curso: Programación (Código 213023) - UNAD | Fase 4: Prácticas Simuladas
-Rol Asignado (Integrante 4 - Lógica de Negocio y Transacciones): [Nombre Compañero 4 / Malkon Alvarez]
+Rol Asignado (Integrante 4 - Lógica de Negocio y Transacciones): [Kevin Andres Vasquez / Malkon Alvarez]
 Rama de Trabajo: feature/business-logic-reservations
 ========================================================================================
 Propósito:
@@ -92,14 +92,29 @@ class GestorSoftwareFJ:
     # ----------------------------------------------------------------------------------
     def registrar_servicio(self, servicio: Servicio):
         """Agrega un servicio al catálogo de la empresa."""
+        operacion_exitosa = False
+
         try:
             if not isinstance(servicio, Servicio):
                 raise ServicioError("El objeto a registrar debe heredar de la clase base 'Servicio'.")
             self.servicios.append(servicio)
-            logger.info(f"Servicio agregado al catálogo: {servicio.obtener_resumen()}")
-        except ServicioError as ex:
+
+        except SoftwareFJError as ex:
             logger.error(f"Rechazado registro de servicio: {ex}")
             raise TransaccionError("Registro de Servicio", str(ex)) from ex
+
+        except Exception as ex:
+            logger.critical(f"Fallo crítico no controlado al registrar servicio: {ex}", exc_info=True)
+            raise TransaccionError("Registro de Servicio", "Fallo interno imprevisto") from ex
+
+        else:
+            operacion_exitosa = True
+            logger.info(f"Servicio agregado al catálogo: {servicio.obtener_resumen()}")
+
+        finally:
+            estado_txt = "EXITOSA" if operacion_exitosa else "FALLIDA/RECHAZADA"
+            identificador = getattr(servicio, "id_entidad", type(servicio).__name__)
+            logger.debug(f"[AUDITORÍA FINALLY] Registro de servicio [{identificador}] finalizado -> Estado: {estado_txt}")
 
     def buscar_cliente(self, criterio: str) -> Cliente:
         """Busca un cliente por ID o por documento."""
@@ -142,6 +157,10 @@ class GestorSoftwareFJ:
             # ENCADENAMIENTO DE EXCEPCIONES: Mantiene viva la causa original 'ex'
             raise TransaccionError("Creación de Reserva", str(ex)) from ex
 
+        except Exception as ex:
+            logger.critical(f"Fallo crítico no controlado al crear reserva [{id_reserva}]: {ex}", exc_info=True)
+            raise TransaccionError("Creación de Reserva", "Fallo interno imprevisto") from ex
+
         else:
             transaccion_ok = True
             logger.info(f"Reserva creada en estado PENDIENTE: {reserva_creada.obtener_resumen()}")
@@ -153,17 +172,32 @@ class GestorSoftwareFJ:
 
     def procesar_confirmacion(self, id_reserva: str, descuento: float = 0.0) -> float:
         """Confirma una reserva y retorna el monto facturado."""
-        reserva = next((r for r in self.reservas if r.id_entidad == id_reserva.upper()), None)
-        if not reserva:
-            raise ReservaError(f"No existe la reserva [{id_reserva}] para procesar.")
-        
+        transaccion_ok = False
+        total = 0.0
+
         try:
+            reserva = next((r for r in self.reservas if r.id_entidad == id_reserva.upper()), None)
+            if not reserva:
+                raise ReservaError(f"No existe la reserva [{id_reserva}] para procesar.")
+
             total = reserva.confirmar(descuento_corporativo=descuento)
-            logger.info(f"Reserva [{id_reserva}] CONFIRMADA exitosamente por ${total:,.2f} COP.")
-            return total
+
         except SoftwareFJError as ex:
             logger.error(f"Fallo al confirmar reserva [{id_reserva}]: {ex}")
             raise TransaccionError("Confirmación de Reserva", str(ex)) from ex
+
+        except Exception as ex:
+            logger.critical(f"Fallo crítico no controlado al confirmar reserva [{id_reserva}]: {ex}", exc_info=True)
+            raise TransaccionError("Confirmación de Reserva", "Fallo interno imprevisto") from ex
+
+        else:
+            transaccion_ok = True
+            logger.info(f"Reserva [{id_reserva}] CONFIRMADA exitosamente por ${total:,.2f} COP.")
+            return total
+
+        finally:
+            resultado = "CONFIRMADA" if transaccion_ok else "ABORTADA"
+            logger.debug(f"[AUDITORÍA FINALLY] Confirmación de reserva [{id_reserva}] finalizada -> Estado: {resultado}")
 
     def calcular_total_facturado(self) -> float:
         """Calcula el consolidado financiero de todas las reservas confirmadas o completadas."""
