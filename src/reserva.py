@@ -2,7 +2,7 @@
 ========================================================================================
 SISTEMA INTEGRAL SOFTWARE FJ - MÓDULO DE RESERVAS
 Curso: Programación (Código 213023) - UNAD | Fase 4: Prácticas Simuladas
-Rol Asignado (Integrante 4 - Lógica de Negocio y Transacciones): [Nombre Compañero 4 / Malkon Alvarez]
+Rol Asignado (Integrante 4 - Lógica de Negocio y Transacciones): [kevin Andres / Malkon Alvarez]
 Rama de Trabajo: feature/business-logic-reservations
 ========================================================================================
 Propósito:
