@@ -2,7 +2,7 @@
 ========================================================================================
 SISTEMA INTEGRAL SOFTWARE FJ - MÓDULO DE EXCEPCIONES PERSONALIZADAS
 Curso: Programación (Código 213023) - UNAD | Fase 4: Prácticas Simuladas
-Rol Asignado (Integrante 2 - Manejo de Errores): [Nombre Compañero 2 / Malkon Alvarez]
+Rol Asignado (Integrante 2 - Manejo de Errores): [Juan Pablo Santacruz Lopez / Malkon Alvarez]
 Rama de Trabajo: feature/custom-exceptions-hierarchy
 ========================================================================================
 Propósito:
@@ -35,17 +35,20 @@ class ClienteError(SoftwareFJError):
 
 class ClienteInvalidoError(ClienteError):
     """Lanzada cuando los datos personales del cliente no superan las reglas de validación."""
-    def __init__(self, mensaje: str):
+    def __init__(self, mensaje: str, campo: str | None = None):
+        self.campo = campo
         super().__init__(mensaje, codigo_error="ERR_CLIENTE_DATOS_INVALIDOS")
 
 class ClienteDuplicadoError(ClienteError):
     """Lanzada cuando se intenta registrar un cliente con un documento ya existente."""
     def __init__(self, documento: str):
+        self.documento = documento
         super().__init__(f"Ya existe un cliente registrado con el documento '{documento}'.", codigo_error="ERR_CLIENTE_DUPLICADO")
 
 class ClienteNoEncontradoError(ClienteError):
     """Lanzada cuando se busca un cliente inexistente en el sistema."""
     def __init__(self, identificador: str):
+        self.identificador = identificador
         super().__init__(f"No se encontró ningún cliente con el ID/Documento '{identificador}'.", codigo_error="ERR_CLIENTE_NO_ENCONTRADO")
 
 
@@ -61,17 +64,23 @@ class ServicioError(SoftwareFJError):
 class ServicioNoDisponibleError(ServicioError):
     """Lanzada cuando un servicio está inactivo o fuera de servicio por mantenimiento."""
     def __init__(self, codigo_servicio: str, razon: str = "Servicio inactivo"):
+        self.codigo_servicio = codigo_servicio
+        self.razon = razon
         super().__init__(f"El servicio '{codigo_servicio}' no está disponible: {razon}.", codigo_error="ERR_SERVICIO_NO_DISPONIBLE")
 
 class CapacidadExcedidaError(ServicioError):
     """Lanzada cuando la cantidad de asistentes supera el aforo de la sala de reuniones."""
     def __init__(self, capacidad_maxima: int, asistentes_solicitados: int):
+        self.capacidad_maxima = capacidad_maxima
+        self.asistentes_solicitados = asistentes_solicitados
         mensaje = f"Aforo superado: Capacidad máxima={capacidad_maxima}, solicitados={asistentes_solicitados}."
         super().__init__(mensaje, codigo_error="ERR_CAPACIDAD_EXCEDIDA")
 
 class StockInsuficienteError(ServicioError):
     """Lanzada cuando la cantidad de equipos solicitados supera el inventario disponible."""
     def __init__(self, stock_actual: int, cantidad_solicitada: int):
+        self.stock_actual = stock_actual
+        self.cantidad_solicitada = cantidad_solicitada
         mensaje = f"Inventario insuficiente: Disponibles={stock_actual}, solicitados={cantidad_solicitada}."
         super().__init__(mensaje, codigo_error="ERR_STOCK_INSUFICIENTE")
 
@@ -93,6 +102,8 @@ class ReservaInvalidaError(ReservaError):
 class EstadoReservaInvalidoError(ReservaError):
     """Lanzada cuando se intenta una transición de estado ilegal (ej. cancelar una reserva ya cancelada)."""
     def __init__(self, estado_actual: str, accion_intentada: str):
+        self.estado_actual = estado_actual
+        self.accion_intentada = accion_intentada
         mensaje = f"No es posible ejecutar '{accion_intentada}' sobre una reserva en estado '{estado_actual}'."
         super().__init__(mensaje, codigo_error="ERR_ESTADO_RESERVA_ILEGAL")
 
@@ -102,4 +113,6 @@ class TransaccionError(SoftwareFJError):
     Representa una falla global en una operación de negocio debido a causas subyacentes.
     """
     def __init__(self, operacion: str, razon: str):
+        self.operacion = operacion
+        self.razon = razon
         super().__init__(f"Fallo en la transacción '{operacion}': {razon}", codigo_error="ERR_TRANSACCION_FALLIDA")
